@@ -8,18 +8,23 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import behavior.Behavior;
+
 public class QLGui extends JFrame{
 
 	private JPanel fond = new JPanel();
 	private JPanel[][] map;
+	private Behavior behavior;
 	
-	public QLGui(int taille){
+	public QLGui(int size){
 		
-		map = new JPanel[taille][taille];
+		behavior = new Behavior(size);
+		
+		map = new JPanel[size][size];
 		this.getContentPane().add(fond);
-		initLayout(taille);
-		initMap(taille);
-		printMap(taille);
+		initLayout(size);
+		initMap(size);
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(700, 700);
 		this.setResizable(false);
@@ -51,10 +56,10 @@ public class QLGui extends JFrame{
 		}
 	}
 	
-	public void setCase(int x, int y, double coef){
+	public void setCase(int x, int y, Color color){
 		
 		JPanel p = new JPanel();
-		p.setBackground(new Color(0,0,(int)Math.floor(coef*200)));
+		p.setBackground(color);
 		p.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		p.add(new JLabel("[" + x + "," + y + "]", JLabel.CENTER));
 		map[x][y] = p;
@@ -63,5 +68,18 @@ public class QLGui extends JFrame{
 	public static void main(String[] args) {
 		QLGui fenetre = new QLGui(10);
 		
+		for(int i=0; i<10; i++){
+			for(int j=0; j<10; j++){
+				int sizeList = fenetre.behavior.getState(i, j).getListAction().size();
+				if(sizeList == 2)
+					fenetre.setCase(i, j, new Color(0,0,255));
+				if(sizeList == 3)
+					fenetre.setCase(i, j, new Color(0,255,0));
+				if(sizeList == 4)
+					fenetre.setCase(i, j, new Color(255,0,0));
+				System.out.println("["+i+","+j+"] - "+sizeList);
+			}
+		}
+		fenetre.printMap(10);
 	}
 }
