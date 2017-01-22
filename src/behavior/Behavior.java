@@ -3,16 +3,22 @@ package behavior;
 import java.util.ArrayList;
 
 import action.ActionQL;
+import agent.Agent;
 
 public class Behavior {
 	private State[][] behavior;
+	private int size;
+	
+	private Agent agentQL;
 	
 	public Behavior(int size){
+		this.size = size;
 		behavior = new State[size][size];
-		initBehavior(size);
+		initBehavior();
+		agentQL = new Agent(0, 0);
 	}
 	
-	public void initBehavior(int size){
+	public void initBehavior(){
 		//state initialisation
 		for(int i=0; i<size; i++){
 			for(int j=0; j<size; j++){
@@ -49,7 +55,32 @@ public class Behavior {
 		
 	}
 	
+	public void addGoal(int x, int y, double reward){
+		behavior[x][y].setReward(reward);
+	}
+	
+	public State getGoal(){
+		for(int i=0; i<size; i++){
+			for(int j=0; j<size; j++){
+				if(behavior[i][j].getReward()>0){
+					return behavior[i][j];
+				}
+			}
+		}
+		return null;
+	}
+	
 	public State getState(int x, int y){
 		return behavior[x][y];
 	}
+
+	public Agent getAgentQL() {
+		return agentQL;
+	}
+
+	public void setAgentQL(Agent agentQL) {
+		this.agentQL = agentQL;
+	}
+	
+	
 }
