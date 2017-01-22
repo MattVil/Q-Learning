@@ -8,12 +8,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import agent.Agent;
 import behavior.Behavior;
 
 public class QLGui extends JFrame{
 
 	private JPanel fond = new JPanel();
 	private JPanel[][] map;
+	
 	private Behavior behavior;
 	
 	public QLGui(int size){
@@ -32,25 +34,54 @@ public class QLGui extends JFrame{
 		this.setVisible(true);
 	}
 	
-	public void initLayout(int taille){
-		fond.setLayout(new GridLayout(taille, taille));
+	public void initLayout(int size){
+		fond.setLayout(new GridLayout(size, size));
 	}
 	
-	public void initMap(int taille){
-		for(int i=0; i<taille; i++){
-			for(int j=0; j<taille; j++){
+	public void initMap(int size){
+		for(int i=0; i<size; i++){
+			for(int j=0; j<size; j++){
 				JPanel p = new JPanel();
 				p.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				p.add(new JLabel("[" + i + "," + j + "]", JLabel.CENTER));
+				
 				map[i][j] = p;
 			}
 		}
 	}
 	
-	public void printMap(int taille){
-		int index = 0;
-		for(int i=0; i<taille; i++){
-			for(int j=0; j<taille; j++){
+	public void refreshMap(int size){
+		for(int i=0; i<size; i++){
+			for(int j=0; j<size; j++){
+				//coloration des case sans reward
+				if(behavior.getState(i, j).getReward() == 0 ){
+					this.setCase(i, j, new Color(175,175,175));
+					System.out.println("("+i+"-"+j+") -> "+behavior.getState(i, j).getReward());
+				}
+				
+				//coloration de l'agent
+				if(behavior.getAgentQL().getPosX() == i && behavior.getAgentQL().getPosY() == j){
+					this.setCase(i, j, new Color(0,0,255));
+					System.out.println("Agent : ("+i+"-"+j+") -> "+behavior.getState(i, j).getReward());
+				}
+				
+				//coloration du/des reward(s)
+				if(behavior.getState(i, j).getReward()>0){
+					this.setCase(i, j, new Color(0,255,0));
+					System.out.println("reward : ("+i+"-"+j+") ->"+behavior.getState(i, j).getReward());
+				}
+				else if(behavior.getState(i, j).getReward()<0){
+					this.setCase(i, j, new Color(255,0,0));
+					System.out.println("reward : ("+i+"-"+j+") ->"+behavior.getState(i, j).getReward());
+				}
+			}
+		}
+	}
+	
+	
+	public void printMap(int size){
+		for(int i=0; i<size; i++){
+			for(int j=0; j<size; j++){
 				fond.add(map[i][j]);
 			}
 		}
@@ -66,20 +97,15 @@ public class QLGui extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		QLGui fenetre = new QLGui(10);
 		
-		for(int i=0; i<10; i++){
-			for(int j=0; j<10; j++){
-				int sizeList = fenetre.behavior.getState(i, j).getListAction().size();
-				if(sizeList == 2)
-					fenetre.setCase(i, j, new Color(0,0,255));
-				if(sizeList == 3)
-					fenetre.setCase(i, j, new Color(0,255,0));
-				if(sizeList == 4)
-					fenetre.setCase(i, j, new Color(255,0,0));
-				System.out.println("["+i+","+j+"] - "+sizeList);
-			}
-		}
-		fenetre.printMap(10);
+		int sizeOfMap = 10;
+		
+		QLGui fenetre = new QLGui(sizeOfMap);
+	
+		fenetre.behavior.addGoal(5, 7, 100);
+		fenetre.behavior.addGoal(0, 9, -10);
+		
+		fenetre.refreshMap(sizeOfMap);
+		fenetre.printMap(sizeOfMap);
 	}
 }
