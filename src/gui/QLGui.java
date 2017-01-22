@@ -56,23 +56,23 @@ public class QLGui extends JFrame{
 				//coloration des case sans reward
 				if(behavior.getState(i, j).getReward() == 0 ){
 					this.setCase(i, j, new Color(175,175,175));
-					System.out.println("("+i+"-"+j+") -> "+behavior.getState(i, j).getReward());
-				}
-				
-				//coloration de l'agent
-				if(behavior.getAgentQL().getPosX() == i && behavior.getAgentQL().getPosY() == j){
-					this.setCase(i, j, new Color(0,0,255));
-					System.out.println("Agent : ("+i+"-"+j+") -> "+behavior.getState(i, j).getReward());
+					//System.out.println("("+i+"-"+j+") -> "+behavior.getState(i, j).getReward());
 				}
 				
 				//coloration du/des reward(s)
 				if(behavior.getState(i, j).getReward()>0){
 					this.setCase(i, j, new Color(0,255,0));
-					System.out.println("reward : ("+i+"-"+j+") ->"+behavior.getState(i, j).getReward());
+					//System.out.println("reward : ("+i+"-"+j+") ->"+behavior.getState(i, j).getReward());
 				}
 				else if(behavior.getState(i, j).getReward()<0){
 					this.setCase(i, j, new Color(255,0,0));
-					System.out.println("reward : ("+i+"-"+j+") ->"+behavior.getState(i, j).getReward());
+					//System.out.println("reward : ("+i+"-"+j+") ->"+behavior.getState(i, j).getReward());
+				}
+				
+				//coloration de l'agent
+				if(behavior.getAgentQL().getPosX() == i && behavior.getAgentQL().getPosY() == j){
+					this.setCase(i, j, new Color(0,0,255));
+					//System.out.println("Agent : ("+i+"-"+j+") -> "+behavior.getState(i, j).getReward());
 				}
 			}
 		}
@@ -104,6 +104,10 @@ public class QLGui extends JFrame{
 	
 		fenetre.behavior.addGoal(5, 7, 100);
 		fenetre.behavior.addGoal(0, 9, -10);
+		
+		
+		fenetre.behavior.moveAgent("down");
+		System.out.println(fenetre.behavior.getAgentQL().getCurrentState().toString());
 		
 		fenetre.refreshMap(sizeOfMap);
 		fenetre.printMap(sizeOfMap);
