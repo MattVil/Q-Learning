@@ -53,4 +53,8 @@ public class State {
 		this.listAction = listAction;
 	}
 	
+	public String toString(){
+		return "("+x+";"+y+") reward : "+reward;
+	}
+	
 }
