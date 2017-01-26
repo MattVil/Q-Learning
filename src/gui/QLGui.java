@@ -17,15 +17,17 @@ public class QLGui extends JFrame{
 	private JPanel[][] map;
 	
 	private Behavior behavior;
+	private int size;
 	
 	public QLGui(int size){
 		
+		this.size = size;
 		behavior = new Behavior(size);
 		
 		map = new JPanel[size][size];
 		this.getContentPane().add(fond);
-		initLayout(size);
-		initMap(size);
+		initLayout();
+		initMap();
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(700, 700);
@@ -34,11 +36,11 @@ public class QLGui extends JFrame{
 		this.setVisible(true);
 	}
 	
-	public void initLayout(int size){
+	public void initLayout(){
 		fond.setLayout(new GridLayout(size, size));
 	}
 	
-	public void initMap(int size){
+	public void initMap(){
 		for(int i=0; i<size; i++){
 			for(int j=0; j<size; j++){
 				JPanel p = new JPanel();
@@ -46,42 +48,27 @@ public class QLGui extends JFrame{
 				p.add(new JLabel("[" + i + "," + j + "]", JLabel.CENTER));
 				
 				map[i][j] = p;
+				fond.add(map[i][j]);
 			}
 		}
 	}
 	
-	public void refreshMap(int size){
+	public void refreshMap(){
 		for(int i=0; i<size; i++){
 			for(int j=0; j<size; j++){
-				//coloration des case sans reward
-				if(behavior.getState(i, j).getReward() == 0 ){
-					this.setCase(i, j, new Color(175,175,175));
-					//System.out.println("("+i+"-"+j+") -> "+behavior.getState(i, j).getReward());
+				if(behavior.getState(i, j).getReward() == 0){
+					map[i][j].setBackground(new Color(192,192,192));
 				}
-				
-				//coloration du/des reward(s)
-				if(behavior.getState(i, j).getReward()>0){
-					this.setCase(i, j, new Color(0,255,0));
-					//System.out.println("reward : ("+i+"-"+j+") ->"+behavior.getState(i, j).getReward());
+				if(behavior.getState(i, j).getReward() > 0){
+					map[i][j].setBackground(new Color(51,255,51));
 				}
-				else if(behavior.getState(i, j).getReward()<0){
-					this.setCase(i, j, new Color(255,0,0));
-					//System.out.println("reward : ("+i+"-"+j+") ->"+behavior.getState(i, j).getReward());
+				if(behavior.getState(i, j).getReward() < 0){
+					map[i][j].setBackground(new Color(255,51,51));
 				}
-				
-				//coloration de l'agent
 				if(behavior.getAgentQL().getPosX() == i && behavior.getAgentQL().getPosY() == j){
-					this.setCase(i, j, new Color(0,0,255));
-					//System.out.println("Agent : ("+i+"-"+j+") -> "+behavior.getState(i, j).getReward());
+					map[i][j].setBackground(new Color(0,128,255));
 				}
-			}
-		}
-	}
-	
-	
-	public void printMap(int size){
-		for(int i=0; i<size; i++){
-			for(int j=0; j<size; j++){
+				fond.setLayout(new GridLayout(size, size));
 				fond.add(map[i][j]);
 			}
 		}
@@ -101,15 +88,25 @@ public class QLGui extends JFrame{
 		int sizeOfMap = 10;
 		
 		QLGui fenetre = new QLGui(sizeOfMap);
+		
+		Agent agent = new Agent(0,0);
+		
+		fenetre.behavior.addGoal(5, 5, 100);
+		fenetre.behavior.addGoal(2, 8, -10);
 	
-		fenetre.behavior.addGoal(5, 7, 100);
-		fenetre.behavior.addGoal(0, 9, -10);
+		fenetre.refreshMap();
+		
+		for(int i=0; i<5; i++){
+			try{
+				Thread.sleep(500);
+			}catch(InterruptedException e){
+				Thread.currentThread().interrupt();
+				e.printStackTrace();
+			}
+			fenetre.behavior.moveAgent("down");
+			fenetre.refreshMap();
+		}
 		
 		
-		fenetre.behavior.moveAgent("down");
-		System.out.println(fenetre.behavior.getAgentQL().getCurrentState().toString());
-		
-		fenetre.refreshMap(sizeOfMap);
-		fenetre.printMap(sizeOfMap);
 	}
 }
