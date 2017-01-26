@@ -1,6 +1,7 @@
 package behavior;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import action.ActionQL;
 import agent.Agent;
@@ -56,6 +57,46 @@ public class Behavior {
 				behavior[i][j].setListAction(list);	
 			}
 		}
+		
+	}
+	
+	public ActionQL QLDecision(){
+		ActionQL action;
+		/*liste des actions possibles*/
+		ArrayList<ActionQL> choiseList = agentQL.getCurrentState().getListAction();
+		
+		/*creation et remplissage d'une liste contenant le/les actions maximale(s)*/
+		ArrayList<ActionQL> listMax = new ArrayList<ActionQL>();
+		double max = choiseList.get(0).getValue();
+		for(int i=0; i<choiseList.size(); i++){
+			if(choiseList.get(i).getValue() > max){
+				listMax.clear();
+				listMax.add(choiseList.get(i));
+				max = choiseList.get(i).getValue();
+			}
+			else if(choiseList.get(i).getValue() == max){
+				listMax.add(choiseList.get(i));
+			}
+		}
+		
+		if(listMax.size()>1)
+			action = randomActionChoise(listMax);
+		else
+			action = listMax.get(0);
+		
+		return action;
+	}
+	
+	public ActionQL randomActionChoise(ArrayList<ActionQL> list){
+		Random rand = new Random();
+		int choise;
+		
+		choise = rand.nextInt(list.size());
+		
+		return list.get(choise);
+	}
+	
+	public void moveAgent(State nextState){
 		
 	}
 	
