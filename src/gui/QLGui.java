@@ -19,6 +19,8 @@ public class QLGui extends JFrame{
 	private Behavior behavior;
 	private int size;
 	
+	private static int speed = 200;
+	
 	public QLGui(int size){
 		
 		this.size = size;
@@ -98,7 +100,7 @@ public class QLGui extends JFrame{
 		
 		for(int i=0; i<5; i++){
 			try{
-				Thread.sleep(500);
+				Thread.sleep(speed);
 			}catch(InterruptedException e){
 				Thread.currentThread().interrupt();
 				e.printStackTrace();
