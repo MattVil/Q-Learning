@@ -18,6 +18,9 @@ public class Behavior {
 	
 	private Agent agentQL;
 	
+	private static double learnFactor = 0.5;
+	private static double discountedFactor = 0.5;
+	
 	/**
 	 * Create a behavior of size*size
 	 * @param size
@@ -122,10 +125,54 @@ public class Behavior {
 	}
 	
 	/**
-	 * this methode change the state of the agent using the next state of the agent move
+	 * this methode set the value a action using the Q-learning equation
+	 * @param action
+	 */
+	public void setActionQValue(ActionQL action){
+		double newValue;
+		
+		double maxFutureQValue = maxQValue(action.getNextState());
+		
+		//Q-Learning actualization
+		newValue = action.getValue() + learnFactor * (action.getNextState().getReward() + discountedFactor * maxFutureQValue - action.getValue());
+		
+		action.setValue(newValue);
+	}
+	
+	/**
+	 * this methode found the the action with the biggest QValue of a state and return
+	 * the biggest QValue
+	 * @param state
+	 * @return biggest QValue
+	 */
+	public double maxQValue(State state){
+		double max = state.getListAction().get(0).getValue();
+		
+		for(int i=0; i<state.getListAction().size(); i++){
+			if(state.getListAction().get(i).getValue() > max){
+				max = state.getListAction().get(i).getValue();
+			}
+		}
+		
+		return max;
+	}
+	
+	/**
+	 * this methode change the state of the agent using a action
 	 * @param nextState
 	 */
-	public void moveAgent(State nextState){
+	public void moveAgent(ActionQL action){
+		
+		agentQL.setCurrentState(action.getNextState());
+		setActionQValue(action);
+		
+		//verification que l'etat suivant n'est pas un reward
+		int posX = agentQL.getCurrentState().getX();
+		int posY = agentQL.getCurrentState().getY();
+		
+		if(behavior[posX][posY].getReward() != 0){
+			agentQL.backToStart();
+		}
 		
 	}
 	
