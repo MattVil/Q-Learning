@@ -17,9 +17,6 @@ public class Agent {
 	
 	private State currentState;
 	
-	private static double learnFactor = 0.5;
-	private static double discountedFactor = 0.5;
-	
 	public Agent(int x, int y){
 		this.initialPosX = x;
 		this.initialPosY = y;
@@ -43,14 +40,6 @@ public class Agent {
 
 	public State getCurrentState() {
 		return currentState;
-	}
-
-	public static double getLearnFactor() {
-		return learnFactor;
-	}
-
-	public static double getDiscountedFactor() {
-		return discountedFactor;
 	}
 
 	public void setCurrentState(State currentState) {
