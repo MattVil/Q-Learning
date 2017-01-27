@@ -6,12 +6,22 @@ import java.util.Random;
 import action.ActionQL;
 import agent.Agent;
 
+/**
+ * 
+ * This class represente the behavior of a agent. it is a gridy environement 
+ * @author matthieu
+ *
+ */
 public class Behavior {
 	private State[][] behavior;
 	private int size;
 	
 	private Agent agentQL;
 	
+	/**
+	 * Create a behavior of size*size
+	 * @param size
+	 */
 	public Behavior(int size){
 		this.size = size;
 		behavior = new State[size][size];
@@ -19,6 +29,12 @@ public class Behavior {
 		initBehavior();
 	}
 	
+	
+	/**
+	 * initialize a simple behavior.
+	 * -create all states
+	 * -create all actions between all states
+	 */
 	public void initBehavior(){
 		//state initialisation
 		for(int i=0; i<size; i++){
@@ -60,6 +76,10 @@ public class Behavior {
 		
 	}
 	
+	/**
+	 * this methode say to the action the right action to do
+	 * @return action to do
+	 */
 	public ActionQL QLDecision(){
 		ActionQL action;
 		/*liste des actions possibles*/
@@ -87,6 +107,11 @@ public class Behavior {
 		return action;
 	}
 	
+	/**
+	 * this methode choose a random action in a list of actions
+	 * @param list of actions
+	 * @return random action
+	 */
 	public ActionQL randomActionChoise(ArrayList<ActionQL> list){
 		Random rand = new Random();
 		int choise;
@@ -96,10 +121,18 @@ public class Behavior {
 		return list.get(choise);
 	}
 	
+	/**
+	 * this methode change the state of the agent using the next state of the agent move
+	 * @param nextState
+	 */
 	public void moveAgent(State nextState){
 		
 	}
 	
+	/**
+	 * this methode change the state of the agent using a String of direction
+	 * @param direction
+	 */
 	public void moveAgent(String direction){
 		State actualState = agentQL.getCurrentState();
 		switch(direction){
@@ -122,10 +155,21 @@ public class Behavior {
 		}
 	}
 	
+	
+	/**
+	 * the methode add a reward of the state (x, y)
+	 * @param x
+	 * @param y
+	 * @param reward
+	 */
 	public void addGoal(int x, int y, double reward){
 		behavior[x][y].setReward(reward);
 	}
 	
+	/**
+	 * this methode return the first goal found
+	 * @return
+	 */
 	public State getGoal(){
 		for(int i=0; i<size; i++){
 			for(int j=0; j<size; j++){

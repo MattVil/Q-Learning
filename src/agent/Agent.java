@@ -2,6 +2,12 @@ package agent;
 
 import behavior.State;
 
+
+/**
+ * This class represente a intelligent agent
+ * @author matthieu
+ *
+ */
 public class Agent {
 	private int posX;
 	private int posY;

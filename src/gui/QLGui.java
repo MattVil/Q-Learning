@@ -11,6 +11,12 @@ import javax.swing.JPanel;
 import agent.Agent;
 import behavior.Behavior;
 
+
+/**
+ * this class is the display of the behavior with reward and agent
+ * @author matthieu
+ *
+ */
 public class QLGui extends JFrame{
 
 	private JPanel fond = new JPanel();
@@ -21,6 +27,10 @@ public class QLGui extends JFrame{
 	
 	private static int speed = 200;
 	
+	/**
+	 * creation of the window and the representation of the behavior
+	 * @param size
+	 */
 	public QLGui(int size){
 		
 		this.size = size;
@@ -38,10 +48,16 @@ public class QLGui extends JFrame{
 		this.setVisible(true);
 	}
 	
+	/**
+	 * initialization of the grid layout
+	 */
 	public void initLayout(){
 		fond.setLayout(new GridLayout(size, size));
 	}
 	
+	/**
+	 * initialization of the map according to the behavior
+	 */
 	public void initMap(){
 		for(int i=0; i<size; i++){
 			for(int j=0; j<size; j++){
@@ -55,6 +71,9 @@ public class QLGui extends JFrame{
 		}
 	}
 	
+	/**
+	 * change the map to synchronize the map and the behavior
+	 */
 	public void refreshMap(){
 		for(int i=0; i<size; i++){
 			for(int j=0; j<size; j++){
@@ -76,6 +95,12 @@ public class QLGui extends JFrame{
 		}
 	}
 	
+	/**
+	 * change the case (x,y) on the map and put the color color
+	 * @param x
+	 * @param y
+	 * @param color
+	 */
 	public void setCase(int x, int y, Color color){
 		
 		JPanel p = new JPanel();

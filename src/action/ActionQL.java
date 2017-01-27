@@ -2,6 +2,12 @@ package action;
 
 import behavior.State;
 
+
+/**
+ * This class represente a action between 2 states
+ * @author matthieu
+ *
+ */
 public class ActionQL {
 	private State currentState;
 	private State nextState;

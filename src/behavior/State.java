@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import action.ActionQL;
 
+
+/**
+ * this class represente the state whitch compose the behavior
+ * @author matthieu
+ *
+ */
 public class State {
 
 	private double reward;
