@@ -2,13 +2,15 @@ package gui;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import agent.Agent;
 import behavior.Behavior;
 
 
@@ -20,7 +22,11 @@ import behavior.Behavior;
 public class QLGui extends JFrame{
 
 	private JPanel fond = new JPanel();
+	private JPanel mapPart = new JPanel();
+	private JPanel settingPart = new JPanel();
 	private JPanel[][] map;
+	
+	private Boolean stop;
 	
 	private Behavior behavior;
 	private int size;
@@ -40,10 +46,13 @@ public class QLGui extends JFrame{
 		this.getContentPane().add(fond);
 		initLayout();
 		initMap();
+		initButton();
+		
+		stop = false;
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(700, 700);
-		this.setResizable(false);
+		this.setSize(1200, 600);
+		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
@@ -52,7 +61,16 @@ public class QLGui extends JFrame{
 	 * initialization of the grid layout
 	 */
 	public void initLayout(){
-		fond.setLayout(new GridLayout(size, size));
+		fond.setLayout(new GridLayout(1, 2));
+		fond.add(mapPart);
+		fond.add(settingPart);
+		mapPart.setLayout(new GridLayout(size, size));
+	}
+	
+	public void initButton(){
+		JButton stopButton = new JButton("STOP");
+		stopButton.addActionListener(new ActionStopLearning());
+		settingPart.add(stopButton);
 	}
 	
 	/**
@@ -66,7 +84,7 @@ public class QLGui extends JFrame{
 				p.add(new JLabel("[" + i + "," + j + "]", JLabel.CENTER));
 				
 				map[i][j] = p;
-				fond.add(map[i][j]);
+				mapPart.add(map[i][j]);
 			}
 		}
 	}
@@ -89,12 +107,12 @@ public class QLGui extends JFrame{
 				if(behavior.getAgentQL().getPosX() == i && behavior.getAgentQL().getPosY() == j){
 					map[i][j].setBackground(new Color(0,128,255));
 				}
-				fond.setLayout(new GridLayout(size, size));
-				fond.add(map[i][j]);
+				mapPart.setLayout(new GridLayout(size, size));
+				mapPart.add(map[i][j]);
 			}
 		}
 	}
-	
+
 	/**
 	 * change the case (x,y) on the map and put the color color
 	 * @param x
@@ -110,30 +128,18 @@ public class QLGui extends JFrame{
 		map[x][y] = p;
 	}
 	
-	public static void main(String[] args) {
-		
-		int sizeOfMap = 10;
-		
-		QLGui fenetre = new QLGui(sizeOfMap);
-		
-		Agent agent = new Agent(0,0);
-		
-		fenetre.behavior.addGoal(5, 5, 100);
-		fenetre.behavior.addGoal(2, 8, -10);
+	public Behavior getBehavior() {
+		return behavior;
+	}
 	
-		fenetre.refreshMap();
-		
-		for(int i=0; i<5; i++){
-			try{
-				Thread.sleep(speed);
-			}catch(InterruptedException e){
-				Thread.currentThread().interrupt();
-				e.printStackTrace();
-			}
-			fenetre.behavior.moveAgent("down");
-			fenetre.refreshMap();
+	public void setStop(Boolean bool){
+		this.stop = bool;
+	}
+	
+	
+	class ActionStopLearning implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			setStop(true);
 		}
-		
-		
 	}
 }
