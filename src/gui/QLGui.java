@@ -31,8 +31,6 @@ public class QLGui extends JFrame{
 	private Behavior behavior;
 	private int size;
 	
-	private static int speed = 200;
-	
 	/**
 	 * creation of the window and the representation of the behavior
 	 * @param size
@@ -134,6 +132,10 @@ public class QLGui extends JFrame{
 	
 	public void setStop(Boolean bool){
 		this.stop = bool;
+	}
+	
+	public Boolean getStop(){
+		return stop;
 	}
 	
 	

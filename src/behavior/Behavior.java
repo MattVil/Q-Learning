@@ -171,7 +171,7 @@ public class Behavior {
 		int posY = agentQL.getCurrentState().getY();
 		
 		if(behavior[posX][posY].getReward() != 0){
-			agentQL.backToStart();
+			agentQL.setCurrentState(this.getState(0, 0));
 		}
 		
 	}
