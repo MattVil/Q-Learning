@@ -18,8 +18,8 @@ public class Behavior {
 	
 	private Agent agentQL;
 	
-	private static double learnFactor = 0.5;
-	private static double discountedFactor = 0.5;
+	private double learnFactor = 0.5;
+	private double discountedFactor = 0.5;
 	
 	/**
 	 * Create a behavior of size*size
@@ -241,6 +241,26 @@ public class Behavior {
 
 	public void setAgentQL(Agent agentQL) {
 		this.agentQL = agentQL;
+	}
+
+
+	public double getLearnFactor() {
+		return learnFactor;
+	}
+
+
+	public void setLearnFactor(double learnFactor) {
+		this.learnFactor = learnFactor;
+	}
+
+
+	public double getDiscountedFactor() {
+		return discountedFactor;
+	}
+
+
+	public void setDiscountedFactor(double discountedFactor) {
+		this.discountedFactor = discountedFactor;
 	}
 	
 	
