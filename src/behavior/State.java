@@ -43,16 +43,18 @@ public class State {
 		return y;
 	}
 
-	public double getQValueAverage(){
+	public void setQValueAverage(){
 		double summe = 0;
-		double average;
 		
 		for(int i=0; i<listAction.size(); i++){
 			summe += listAction.get(i).getValue();
 		}
 		
-		average = summe/4;
-		return average;
+		QValueAverage = summe/4;
+	}
+	
+	public double getQValueAverage(){
+		return QValueAverage;
 	}
 
 	public ArrayList<ActionQL> getListAction() {
@@ -70,7 +72,7 @@ public class State {
 	}
 	
 	public String toString(){
-		return "("+x+";"+y+") reward : "+reward;
+		return "("+x+";"+y+") QV Average : "+(int)QValueAverage*10;
 	}
 	
 }
