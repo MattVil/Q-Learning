@@ -1,16 +1,20 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
+import action.ActionQL;
 import behavior.Behavior;
 
 
@@ -26,7 +30,12 @@ public class QLGui extends JFrame{
 	private JPanel settingPart = new JPanel();
 	private JPanel[][] map;
 	
-	private Boolean stop;
+	private Boolean startStop;
+	JButton startStopButton = new JButton("START");
+	
+	private int speed = 500;
+	private JLabel speedLabel = new JLabel("Speed : ");
+	private JButton speedButton = new JButton("Change");
 	
 	private Behavior behavior;
 	private int size;
@@ -45,8 +54,9 @@ public class QLGui extends JFrame{
 		initLayout();
 		initMap();
 		initButton();
+		initSpeedPart();
 		
-		stop = false;
+		startStop = false;
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1200, 600);
@@ -63,12 +73,23 @@ public class QLGui extends JFrame{
 		fond.add(mapPart);
 		fond.add(settingPart);
 		mapPart.setLayout(new GridLayout(size, size));
+		settingPart.setLayout(new BoxLayout(settingPart, BoxLayout.PAGE_AXIS));
+	}
+	
+	public void initSpeedPart(){
+		JPanel speedPart = new JPanel();
+		speedPart.setLayout(new FlowLayout());
+		speedPart.add(speedLabel);
+		speedPart.add(new JTextField(String.valueOf(speed)));
+		//speedButton.addActionListener(new ActionChangeSpeed());
+		speedPart.add(speedButton);
+		
+		settingPart.add(speedPart);
 	}
 	
 	public void initButton(){
-		JButton stopButton = new JButton("STOP");
-		stopButton.addActionListener(new ActionStopLearning());
-		settingPart.add(stopButton);
+		startStopButton.addActionListener(new ActionStopLearning());
+		settingPart.add(startStopButton);
 	}
 	
 	/**
@@ -83,6 +104,23 @@ public class QLGui extends JFrame{
 				
 				map[i][j] = p;
 				mapPart.add(map[i][j]);
+			}
+		}
+	}
+	
+	public void run(){
+		while(startStop){
+			
+			ActionQL actionChosen = behavior.QLDecision();
+			behavior.moveAgent(actionChosen);
+			
+			refreshMap();
+			
+			try{
+				Thread.sleep(speed);
+			}catch(InterruptedException e){
+				Thread.currentThread().interrupt();
+				e.printStackTrace();
 			}
 		}
 	}
@@ -108,7 +146,7 @@ public class QLGui extends JFrame{
 					map[i][j].setBackground(new Color(51,255,51));
 				}
 				if(behavior.getState(i, j).getReward() < 0){
-					map[i][j].setBackground(new Color(255,51,51));
+					map[i][j].setBackground(new Color(255,255,0));
 				}
 				if(behavior.getAgentQL().getPosX() == i && behavior.getAgentQL().getPosY() == j){
 					map[i][j].setBackground(new Color(0,128,255));
@@ -139,17 +177,39 @@ public class QLGui extends JFrame{
 	}
 	
 	public void setStop(Boolean bool){
-		this.stop = bool;
+		this.startStop = bool;
 	}
 	
 	public Boolean getStop(){
-		return stop;
+		return startStop;
 	}
 	
+	public void setSpeed(int speed){
+		this.speed = speed;
+	}
+	
+	public int getSpeed(){
+		return this.speed;
+	}
 	
 	class ActionStopLearning implements ActionListener{
 		public void actionPerformed(ActionEvent e){
-			setStop(true);
+			if(startStop){
+				startStop = false;
+				startStopButton.setText("START");
+			}
+			else{
+				startStop = true;
+				startStopButton.setText("STOP");
+			}
+		}
+	}
+	
+	class ActionChangeSpeed implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			int value = Integer.parseInt(speedLabel.getText());
+			speed = value;
+			speedLabel.setText(String.valueOf(speed));
 		}
 	}
 }
