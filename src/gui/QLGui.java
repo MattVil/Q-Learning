@@ -91,10 +91,18 @@ public class QLGui extends JFrame{
 	 * change the map to synchronize the map and the behavior
 	 */
 	public void refreshMap(){
+		
+		mapPart.setLayout(new GridLayout(size, size));
+		
 		for(int i=0; i<size; i++){
 			for(int j=0; j<size; j++){
 				if(behavior.getState(i, j).getReward() == 0){
-					map[i][j].setBackground(new Color(192,192,192));
+					if(behavior.getState(i, j).getQValueAverage() > 0){
+						int color = 250- ((int)behavior.getState(i, j).getQValueAverage()*10);
+						map[i][j].setBackground(new Color(255,color,color));
+					}
+					else
+						map[i][j].setBackground(new Color(255,255,255));
 				}
 				if(behavior.getState(i, j).getReward() > 0){
 					map[i][j].setBackground(new Color(51,255,51));
@@ -105,7 +113,7 @@ public class QLGui extends JFrame{
 				if(behavior.getAgentQL().getPosX() == i && behavior.getAgentQL().getPosY() == j){
 					map[i][j].setBackground(new Color(0,128,255));
 				}
-				mapPart.setLayout(new GridLayout(size, size));
+				
 				mapPart.add(map[i][j]);
 			}
 		}

@@ -162,8 +162,10 @@ public class Behavior {
 	 * @param nextState
 	 */
 	public void moveAgent(ActionQL action){
-		
+		agentQL.getCurrentState().setQValueAverage();
+		System.out.print(agentQL.getCurrentState().toString() + "\t" + action.toString() + "\t");
 		agentQL.setCurrentState(action.getNextState());
+		System.out.println(agentQL.getCurrentState().toString());
 		setActionQValue(action);
 		
 		//verification que l'etat suivant n'est pas un reward
