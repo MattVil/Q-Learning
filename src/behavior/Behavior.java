@@ -18,14 +18,16 @@ public class Behavior {
 	
 	private Agent agentQL;
 	
-	private double learnFactor = 0.5;
-	private double discountedFactor = 0.5;
+	private double learnFactor;
+	private double discountedFactor;
 	
 	/**
 	 * Create a behavior of size*size
 	 * @param size
 	 */
 	public Behavior(int size){
+		learnFactor = 0.5;
+		discountedFactor = 0.5;
 		this.size = size;
 		behavior = new State[size][size];
 		agentQL = new Agent(0, 0);
@@ -165,7 +167,7 @@ public class Behavior {
 		agentQL.getCurrentState().setQValueAverage();
 		System.out.print(agentQL.getCurrentState().toString() + "\t" + action.toString() + "\t");
 		agentQL.setCurrentState(action.getNextState());
-		System.out.println(agentQL.getCurrentState().toString());
+		System.out.println(agentQL.getCurrentState().toString() + "\tl:"+learnFactor+" d:"+discountedFactor);
 		setActionQValue(action);
 		
 		//verification que l'etat suivant n'est pas un reward
