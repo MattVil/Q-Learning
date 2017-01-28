@@ -32,4 +32,8 @@ public class ActionQL {
 	public State getNextState(){
 		return this.nextState;
 	}
+	
+	public String toString(){
+		return "("+currentState.getX()+";"+currentState.getY()+") --> "+value+" --> ("+nextState.getX()+";"+nextState.getY()+")";
+	}
 }
