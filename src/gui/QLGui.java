@@ -25,6 +25,9 @@ import behavior.Behavior;
  */
 public class QLGui extends JFrame{
 
+	private Behavior behavior;
+	private int size;
+	
 	private JPanel fond = new JPanel();
 	private JPanel mapPart = new JPanel();
 	private JPanel settingPart = new JPanel();
@@ -34,11 +37,12 @@ public class QLGui extends JFrame{
 	JButton startStopButton = new JButton("START");
 	
 	private int speed = 500;
-	private JLabel speedLabel = new JLabel("Speed : ");
+	private JTextField speedTextField = new JTextField(String.valueOf(speed));
 	private JButton speedButton = new JButton("Change");
 	
-	private Behavior behavior;
-	private int size;
+	private JTextField learnFactorTF;
+	private JTextField discountedFactorTF;
+	private JButton factorButton = new JButton("Change");
 	
 	/**
 	 * creation of the window and the representation of the behavior
@@ -54,7 +58,7 @@ public class QLGui extends JFrame{
 		initLayout();
 		initMap();
 		initButton();
-		initSpeedPart();
+		initSettingPart();
 		
 		startStop = false;
 		
@@ -76,15 +80,26 @@ public class QLGui extends JFrame{
 		settingPart.setLayout(new BoxLayout(settingPart, BoxLayout.PAGE_AXIS));
 	}
 	
-	public void initSpeedPart(){
+	public void initSettingPart(){
 		JPanel speedPart = new JPanel();
 		speedPart.setLayout(new FlowLayout());
-		speedPart.add(speedLabel);
-		speedPart.add(new JTextField(String.valueOf(speed)));
-		//speedButton.addActionListener(new ActionChangeSpeed());
+		speedPart.add(new JLabel("Speed : "));
+		speedPart.add(speedTextField);
+		speedButton.addActionListener(new ActionChangeSpeed());
 		speedPart.add(speedButton);
-		
 		settingPart.add(speedPart);
+		
+		JPanel factorPart = new JPanel();
+		factorPart.setLayout(new FlowLayout());
+		factorPart.add(new JLabel("Learn Factor : "));
+		learnFactorTF = new JTextField(String.valueOf(behavior.getLearnFactor()));
+		factorPart.add(learnFactorTF);
+		factorPart.add(new JLabel("Discounted Factor : "));
+		discountedFactorTF = new JTextField(String.valueOf(behavior.getDiscountedFactor()));
+		factorPart.add(discountedFactorTF);
+		factorButton.addActionListener(new ActionChangeFactor());
+		factorPart.add(factorButton);
+		settingPart.add(factorPart);
 	}
 	
 	public void initButton(){
@@ -207,9 +222,16 @@ public class QLGui extends JFrame{
 	
 	class ActionChangeSpeed implements ActionListener{
 		public void actionPerformed(ActionEvent e){
-			int value = Integer.parseInt(speedLabel.getText());
+			int value = Integer.parseInt(speedTextField.getText());
 			speed = value;
-			speedLabel.setText(String.valueOf(speed));
+			speedTextField.setText(String.valueOf(speed));
+		}
+	}
+	
+	class ActionChangeFactor implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			behavior.setLearnFactor(Double.parseDouble(learnFactorTF.getText()));
+			behavior.setDiscountedFactor(Double.parseDouble(discountedFactorTF.getText()));
 		}
 	}
 }
