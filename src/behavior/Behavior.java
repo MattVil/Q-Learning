@@ -165,9 +165,8 @@ public class Behavior {
 	 */
 	public void moveAgent(ActionQL action){
 		agentQL.getCurrentState().setQValueAverage();
-		System.out.print(agentQL.getCurrentState().toString() + "\t" + action.toString() + "\t");
+		System.out.print("\t" + action.toString());
 		agentQL.setCurrentState(action.getNextState());
-		System.out.println(agentQL.getCurrentState().toString() + "\tl:"+learnFactor+" d:"+discountedFactor);
 		setActionQValue(action);
 		
 		//verification que l'etat suivant n'est pas un reward
@@ -175,8 +174,12 @@ public class Behavior {
 		int posY = agentQL.getCurrentState().getY();
 		
 		if(behavior[posX][posY].getReward() != 0){
+			System.out.println("\t Goal !");
 			agentQL.backToStart();
 			agentQL.setCurrentState(this.getState(0, 0));
+		}
+		else{
+			System.out.println("");
 		}
 		
 	}
