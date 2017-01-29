@@ -141,14 +141,13 @@ public class QLGui extends JFrame{
 		
 		while(startStop){
 			ActionQL actionChosen = new ActionQL();
-			System.out.print("counter : " + counter.toString());
 			if(counter.getCounter() == 1){
 				actionChosen = behavior.randomActionChoise(behavior.getAgentQL().getCurrentState().getListAction());
-				System.out.println("\thazard");
+				System.out.print("Explor");
 			}
 			else{
 				actionChosen = behavior.QLDecision();
-				System.out.println("\tbest action");
+				System.out.print("Exploitation");
 			}
 			counter.increment();
 			
@@ -177,6 +176,9 @@ public class QLGui extends JFrame{
 				if(behavior.getState(i, j).getReward() == 0){
 					if(behavior.getState(i, j).getQValueAverage() > 0){
 						int color = 250- ((int)behavior.getState(i, j).getQValueAverage()*10);
+						if(color > 254 || color < 0){
+							color = 0;
+						}
 						map[i][j].setBackground(new Color(255,color,color));
 					}
 					else
