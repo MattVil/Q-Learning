@@ -14,9 +14,8 @@ public class TestGUI {
 		Agent agent = new Agent(0,0);
 		
 		//new goal add
-		fenetre.getBehavior().addGoal(5, 5, 100);
-		fenetre.getBehavior().addGoal(5, 3, -100);
-		fenetre.getBehavior().addGoal(3, 5, -100);
+		fenetre.getBehavior().addGoal(7, 5, 10);
+		fenetre.getBehavior().addGoal(5, 7, 100);
 	
 		fenetre.refreshMap();
 		
