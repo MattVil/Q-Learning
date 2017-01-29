@@ -21,6 +21,10 @@ public class ActionQL {
 		this.value = 0;
 	}
 	
+	public ActionQL(){
+		this.value = 0;
+	}
+	
 	public double getValue(){
 		return this.value;
 	}

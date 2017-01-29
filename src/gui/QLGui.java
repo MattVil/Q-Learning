@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import action.ActionQL;
 import behavior.Behavior;
+import tools.CyclicCounter;
 
 
 /**
@@ -38,11 +39,16 @@ public class QLGui extends JFrame{
 	
 	private int speed = 500;
 	private JTextField speedTextField = new JTextField(String.valueOf(speed));
-	private JButton speedButton = new JButton("Change");
+	private JButton speedButton = new JButton("Switch");
 	
 	private JTextField learnFactorTF;
 	private JTextField discountedFactorTF;
-	private JButton factorButton = new JButton("Change");
+	private JButton factorButton = new JButton("Switch");
+	
+	private int explorationLVL = 10;
+	private CyclicCounter counter = new CyclicCounter(1, 1, explorationLVL);
+	private JTextField explorationTF = new JTextField(String.valueOf(explorationLVL));
+	private JButton explorationButton = new JButton("Switch");
 	
 	/**
 	 * creation of the window and the representation of the behavior
@@ -100,6 +106,14 @@ public class QLGui extends JFrame{
 		factorButton.addActionListener(new ActionChangeFactor());
 		factorPart.add(factorButton);
 		settingPart.add(factorPart);
+		
+		JPanel explorationPart = new JPanel();
+		explorationPart.setLayout(new FlowLayout());
+		explorationPart.add(new JLabel("Exploration lvl : 1/"));
+		explorationPart.add(explorationTF);
+		explorationButton.addActionListener(new ActionChangeExplorationLVL());
+		explorationPart.add(explorationButton);
+		settingPart.add(explorationPart);
 	}
 	
 	public void initButton(){
@@ -124,9 +138,20 @@ public class QLGui extends JFrame{
 	}
 	
 	public void run(){
+		
 		while(startStop){
+			ActionQL actionChosen = new ActionQL();
+			System.out.print("counter : " + counter.toString());
+			if(counter.getCounter() == 1){
+				actionChosen = behavior.randomActionChoise(behavior.getAgentQL().getCurrentState().getListAction());
+				System.out.println("\thazard");
+			}
+			else{
+				actionChosen = behavior.QLDecision();
+				System.out.println("\tbest action");
+			}
+			counter.increment();
 			
-			ActionQL actionChosen = behavior.QLDecision();
 			behavior.moveAgent(actionChosen);
 			
 			refreshMap();
@@ -232,6 +257,13 @@ public class QLGui extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			behavior.setLearnFactor(Double.parseDouble(learnFactorTF.getText()));
 			behavior.setDiscountedFactor(Double.parseDouble(discountedFactorTF.getText()));
+		}
+	}
+	
+	class ActionChangeExplorationLVL implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			explorationLVL = Integer.parseInt(explorationTF.getText());
+			counter.setMax(explorationLVL);
 		}
 	}
 }
