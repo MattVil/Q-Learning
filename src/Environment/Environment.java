@@ -1,4 +1,4 @@
-package behavior;
+package Environment;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,7 +12,7 @@ import agent.Agent;
  * @author matthieu
  *
  */
-public class Behavior {
+public class Environment {
 	private State[][] behavior;
 	private int size;
 	
@@ -25,7 +25,7 @@ public class Behavior {
 	 * Create a behavior of size*size
 	 * @param size
 	 */
-	public Behavior(int size){
+	public Environment(int size){
 		learnFactor = 0.5;
 		discountedFactor = 0.5;
 		this.size = size;

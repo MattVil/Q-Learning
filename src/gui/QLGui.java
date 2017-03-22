@@ -14,8 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Environment.Environment;
 import action.ActionQL;
-import behavior.Behavior;
 import tools.CyclicCounter;
 
 
@@ -26,7 +26,7 @@ import tools.CyclicCounter;
  */
 public class QLGui extends JFrame{
 
-	private Behavior behavior;
+	private Environment behavior;
 	private int size;
 	
 	private JPanel fond = new JPanel();
@@ -57,7 +57,7 @@ public class QLGui extends JFrame{
 	public QLGui(int size){
 		
 		this.size = size;
-		behavior = new Behavior(size);
+		behavior = new Environment(size);
 		
 		map = new JPanel[size][size];
 		this.getContentPane().add(fond);
@@ -214,7 +214,7 @@ public class QLGui extends JFrame{
 		map[x][y] = p;
 	}
 	
-	public Behavior getBehavior() {
+	public Environment getBehavior() {
 		return behavior;
 	}
 	

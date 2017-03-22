@@ -1,6 +1,6 @@
 package agent;
 
-import behavior.State;
+import Environment.State;
 
 
 /**
